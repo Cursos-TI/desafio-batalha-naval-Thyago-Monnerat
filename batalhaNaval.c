@@ -7,6 +7,8 @@
 #define LINHAS 10
 #define COLUNAS 10
 
+int checarSeCabeNoTabuleiro(int i);
+
 int main() {
     // Nível Novato - Posicionamento dos Navios
     // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
@@ -28,16 +30,19 @@ int main() {
 
     printf("\n");
 
-    //condição para adicionar um navio horizontalmente
+    //condição para adicionar um navio horizontalmente e verticalmente
     for(int i = 0; i < 3; i++){
+        if(checarSeCabeNoTabuleiro(navioX[1][i]) == 1 || checarSeCabeNoTabuleiro(navioX[0][0]) == 1){
+            printf("Reta viola os limites");
+            return 0;
+        }
+         if(checarSeCabeNoTabuleiro(navioY[0][i]) == 1 || checarSeCabeNoTabuleiro(navioY[1][0]) == 1){
+            printf("Reta viola os limites");
+            return 0;
+        }
         tabuleiro[navioX[0][0]][navioX[1][i]] = 3;
-    }
-
-    //condição para adicionar um navio verticalmente
-    for(int i = 0; i < 3; i++){
         tabuleiro[navioY[0][i]][navioY[1][0]] = 3;
     }
-
 
     for(int i = 0; i < LINHAS; i++){
         //condicional apenas para adicionar, ou não, um espaço no começo das linhas, para alinhar as linhas 1 a 9 com a linha 10
@@ -63,6 +68,70 @@ int main() {
     // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
     // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
 
+    printf("\n====================== TABULEIRO NÍVEL AVENTUREIRO ======================\n\n");
+    //coordenadas para navio em diagonal decrescente
+    int navioDiagonal1[3] = {3,7};
+    //coordenadas para navio em diagonal crescente
+    int navioDiagonal2[3] = {0,3};
+
+    printf("   ");
+
+    //printando as letras das colunas
+    for(int i = 0; i < COLUNAS; i++){
+        printf("%c ", colunas[i]);
+    }
+
+    printf("\n");
+
+    for(int i = 0; i < 3; i++){
+        if(checarSeCabeNoTabuleiro(navioDiagonal1[i]) == 1){
+            printf("Reta viola os limites");
+            return 0;
+        }
+        if(checarSeCabeNoTabuleiro(navioDiagonal2[i]) == 1){
+            printf("Reta viola os limites");
+            return 0;
+        }
+    }
+
+    //condição para adicionar um navio na diagonal decrescente
+    for(int i = 0; i < LINHAS; i++){
+        if(i > navioDiagonal1[0] && i < navioDiagonal1[1]){
+            if(tabuleiro[i][i] == 3){
+                printf("Sobreposição ou coordenada fora dos limites do tabuleiro");
+                return 0;
+            }   
+            tabuleiro[i][i] = 3;
+        }
+
+        if(i >= navioDiagonal2[0] && i < navioDiagonal2[1]){
+            if(tabuleiro[i][9-i] == 3){
+                printf("Sobreposição ou coordenada fora dos limites do tabuleiro");
+                return 0;
+            }
+            tabuleiro[i][9 - i] = 3;
+        }
+    }
+
+    for(int i = 0; i < LINHAS; i++){
+        //condicional apenas para adicionar, ou não, um espaço no começo das linhas, para alinhar as linhas 1 a 9 com a linha 10
+        if(i < 9){
+            printf(" %d ", i+1);
+        }else{
+            printf("%d ", i+1);
+        }
+
+        for(int j=0; j < COLUNAS; j++){
+            //condição para popular o tabuleiro com 0's sem alterar os navios
+            if(tabuleiro[i][j] != 3){
+                tabuleiro[i][j] = 0;
+            }
+                
+            printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+
     // Nível Mestre - Habilidades Especiais com Matrizes
     // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
     // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
@@ -85,4 +154,10 @@ int main() {
     // 0 0 1 0 0
 
     return 0;
+}
+
+int checarSeCabeNoTabuleiro(int i){
+    if(i < 0 || i > 9){
+        return 1;
+    }
 }
