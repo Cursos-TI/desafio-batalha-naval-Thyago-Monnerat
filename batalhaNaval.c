@@ -16,6 +16,8 @@ int main() {
     printf("\n====================== TABULEIRO NÍVEL NOVATO ======================\n\n");
     const char colunas[COLUNAS] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'} ;
     int tabuleiro[10][10];
+    int navioX[2][3] = {{3}, {4,5,6}};
+    int navioY[2][3] = {{7,8,9}, {2}};
 
     printf("   ");
 
@@ -26,6 +28,17 @@ int main() {
 
     printf("\n");
 
+    //condição para adicionar um navio horizontalmente
+    for(int i = 0; i < 3; i++){
+        tabuleiro[navioX[0][0]][navioX[1][i]] = 3;
+    }
+
+    //condição para adicionar um navio verticalmente
+    for(int i = 0; i < 3; i++){
+        tabuleiro[navioY[0][i]][navioY[1][0]] = 3;
+    }
+
+
     for(int i = 0; i < LINHAS; i++){
         //condicional apenas para adicionar, ou não, um espaço no começo das linhas, para alinhar as linhas 1 a 9 com a linha 10
         if(i < 9){
@@ -35,15 +48,11 @@ int main() {
         }
 
         for(int j=0; j < COLUNAS; j++){
-            //condição para adicionar um navío horizontalmente
-            if(i == 3 && j >= 2 && j < 5){
-                tabuleiro[i][j] = 3;
-            }//condição para adicionar um navío verticalmente
-            else if(i >= 2 && i < 5 && j == 7){
-                tabuleiro[i][j] = 3;
-            }else{
+            //condição para popular o tabuleiro com 0's sem alterar os navios
+            if(tabuleiro[i][j] != 3){
                 tabuleiro[i][j] = 0;
             }
+                
             printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
