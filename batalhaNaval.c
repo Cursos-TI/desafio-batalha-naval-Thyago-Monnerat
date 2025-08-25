@@ -12,6 +12,8 @@ int checarSeCabeNoTabuleiro(int i);
 void exibirTabuleiro(int matriz[LINHAS][COLUNAS]);
 void colocarNavioHorizontal(int navioHorizontal[2], int tabuleiro[LINHAS][COLUNAS]);
 void colocarNavioVertical(int navioVertical[2], int tabuleiro[LINHAS][COLUNAS]);
+void colocarNavioDiagonalPrincipal(int navioDiagonal[2], int tabuleiro[LINHAS][COLUNAS]);
+void colocarNavioDiagonalSecundaria(int navioDiagonal[2], int tabuleiro[LINHAS][COLUNAS]);
 
 int main()
 {
@@ -23,6 +25,8 @@ int main()
     int tabuleiro[LINHAS][COLUNAS];
     int navioHorizontal[2] = {1, 6};
     int navioVertical[2] = {2, 4};
+    int navioDiagonalPrincipal[2] = {7, 7};
+    int navioDiagonalSecundaria[2] = {7, 2};
 
     for (int i = 0; i < LINHAS; i++)
     {
@@ -34,6 +38,8 @@ int main()
 
     colocarNavioHorizontal(navioHorizontal, tabuleiro);
     colocarNavioVertical(navioVertical, tabuleiro);
+    colocarNavioDiagonalPrincipal(navioDiagonalPrincipal, tabuleiro);
+    colocarNavioDiagonalSecundaria(navioDiagonalSecundaria, tabuleiro);
     exibirTabuleiro(tabuleiro);
 
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
@@ -65,7 +71,7 @@ int main()
     return 0;
 }
 
-void colocarNavioHorizontal(int navioHorizontal[2], int tabuleiro[10][10]){
+void colocarNavioHorizontal(int navioHorizontal[2], int tabuleiro[LINHAS][COLUNAS]){
     for (int i = 0; i < TAMANHONAVIO; i++)
     {
         if (!checarSeCabeNoTabuleiro(navioHorizontal[0] + i) || !checarSeCabeNoTabuleiro(navioHorizontal[1] + i))
@@ -84,7 +90,7 @@ void colocarNavioHorizontal(int navioHorizontal[2], int tabuleiro[10][10]){
     }
 }
 
-void colocarNavioVertical(int navioVertical[2], int tabuleiro[10][10]){
+void colocarNavioVertical(int navioVertical[2], int tabuleiro[LINHAS][COLUNAS]){
      for (int i = 0; i < TAMANHONAVIO; i++)
      {
          if (!checarSeCabeNoTabuleiro(navioVertical[0] + i) || !checarSeCabeNoTabuleiro(navioVertical[1] + i))
@@ -103,7 +109,41 @@ void colocarNavioVertical(int navioVertical[2], int tabuleiro[10][10]){
     }
 }
 
-void exibirTabuleiro(int tabuleiro[10][10])
+void colocarNavioDiagonalPrincipal(int navioDiagonal[2], int tabuleiro[LINHAS][COLUNAS]){
+    for(int i = 0; i < TAMANHONAVIO; i++){
+         if (!checarSeCabeNoTabuleiro(navioDiagonal[0] + i) || !checarSeCabeNoTabuleiro(navioDiagonal[1] + i))
+        {
+            printf("Navio diagonal principal viola os limites do tabuleiro");
+            return;
+        }
+        else if(tabuleiro[navioDiagonal[0]+i][navioDiagonal[1]+i] == 3)
+        {
+            printf("Erro ao colocar navio diagonal principal: Está sobrepondo outro navio!");
+            return;
+        }else{
+            tabuleiro[navioDiagonal[0]+i][navioDiagonal[1]+i] = 3;
+        }
+    }
+}
+
+void colocarNavioDiagonalSecundaria(int navioDiagonal[2], int tabuleiro[LINHAS][COLUNAS]){
+    for(int i = 0; i < TAMANHONAVIO; i++){
+         if (!checarSeCabeNoTabuleiro(navioDiagonal[0] + i) || !checarSeCabeNoTabuleiro(navioDiagonal[1] + i))
+        {
+            printf("Navio diagonal secundaria viola os limites do tabuleiro");
+            return;
+        }
+        else if(tabuleiro[navioDiagonal[0]+i][navioDiagonal[1]-i] == 3)
+        {
+            printf("Erro ao colocar navio diagonal secundaria: Está sobrepondo outro navio!");
+            return;
+        }else{
+            tabuleiro[navioDiagonal[0]+i][navioDiagonal[1]-i] = 3;
+        }
+    }
+}   
+
+void exibirTabuleiro(int tabuleiro[LINHAS][COLUNAS])
 {
     printf("\n====================== TABULEIRO NÍVEL NOVATO ======================\n\n");
 
