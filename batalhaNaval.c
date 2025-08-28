@@ -8,6 +8,10 @@
 #define COLUNAS 10
 #define TAMANHONAVIO 3
 
+void iniciarTabuleiro(int tabuleiro[LINHAS][COLUNAS]);
+
+void mostrarTitulo(char titulo[30]);
+
 int checarSeCabeNoTabuleiro(int i);
 void exibirTabuleiro(int matriz[LINHAS][COLUNAS]);
 void colocarNavioHorizontal(int navioHorizontal[2], int tabuleiro[LINHAS][COLUNAS]);
@@ -15,31 +19,29 @@ void colocarNavioVertical(int navioVertical[2], int tabuleiro[LINHAS][COLUNAS]);
 void colocarNavioDiagonalPrincipal(int navioDiagonal[2], int tabuleiro[LINHAS][COLUNAS]);
 void colocarNavioDiagonalSecundaria(int navioDiagonal[2], int tabuleiro[LINHAS][COLUNAS]);
 
+void habilidadeCone(int posicaoInicial[2],int tabuleiro[LINHAS][COLUNAS]);
+void habilidadeCruz(int posicaoCruz[2], int tabuleiro[LINHAS][COLUNAS]);
+void habilidadeOcta(int posicaoOcta[2], int tabuleiro[LINHAS][COLUNAS]);
+
 int main()
 {
+    int tabuleiro[LINHAS][COLUNAS];
+
+    iniciarTabuleiro(tabuleiro);
+
     // Nível Novato - Posicionamento dos Navios
     // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
     // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
     // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
 
-    int tabuleiro[LINHAS][COLUNAS];
+    mostrarTitulo("NÍVEL NOVATO");
+
     int navioHorizontal[2] = {1, 6};
     int navioVertical[2] = {2, 4};
-    int navioDiagonalPrincipal[2] = {7, 7};
-    int navioDiagonalSecundaria[2] = {7, 2};
-
-    for (int i = 0; i < LINHAS; i++)
-    {
-        for (int j = 0; j < COLUNAS; j++)
-        {
-            tabuleiro[i][j] = 0;
-        }
-    }
 
     colocarNavioHorizontal(navioHorizontal, tabuleiro);
     colocarNavioVertical(navioVertical, tabuleiro);
-    colocarNavioDiagonalPrincipal(navioDiagonalPrincipal, tabuleiro);
-    colocarNavioDiagonalSecundaria(navioDiagonalSecundaria, tabuleiro);
+
     exibirTabuleiro(tabuleiro);
 
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
@@ -47,10 +49,60 @@ int main()
     // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
     // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
 
+    //reiniciando tabuleiro
+    iniciarTabuleiro(tabuleiro);
+
+    mostrarTitulo("NÍVEL AVENTUREIRO");
+
+    int navioDiagonalPrincipal[2] = {7, 7};
+    int navioDiagonalSecundaria[2] = {7, 2};
+
+    colocarNavioDiagonalPrincipal(navioDiagonalPrincipal, tabuleiro);
+    colocarNavioDiagonalSecundaria(navioDiagonalSecundaria, tabuleiro);
+
+    exibirTabuleiro(tabuleiro);
+
     // Nível Mestre - Habilidades Especiais com Matrizes
     // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
     // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
     // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+
+    //reiniciando tabuleiro
+    iniciarTabuleiro(tabuleiro);
+
+    mostrarTitulo("HABILIDADE CONE");
+    int posicaoCone[2] = {1, 7};
+    habilidadeCone(posicaoCone, tabuleiro);
+    exibirTabuleiro(tabuleiro);
+
+    //reiniciando tabuleiro
+    iniciarTabuleiro(tabuleiro);
+    
+    mostrarTitulo("HABILIDADE CRUZ");
+    int posicaoCruz[2] = {7,7};
+    habilidadeCruz(posicaoCruz, tabuleiro);
+    exibirTabuleiro(tabuleiro);
+
+    //reiniciando tabuleiro
+    iniciarTabuleiro(tabuleiro);
+
+    mostrarTitulo("HABILIDADE OCTAEDRO");
+    int posicaoOcta[2] = {4, 2};
+    habilidadeOcta(posicaoOcta, tabuleiro);
+    exibirTabuleiro(tabuleiro);
+
+    //reiniciando tabuleiro
+    iniciarTabuleiro(tabuleiro);
+
+    mostrarTitulo("FINAL");
+    colocarNavioHorizontal(navioHorizontal, tabuleiro);
+    colocarNavioVertical(navioVertical, tabuleiro);
+    colocarNavioDiagonalPrincipal(navioDiagonalPrincipal, tabuleiro);
+    colocarNavioDiagonalSecundaria(navioDiagonalSecundaria, tabuleiro);
+    habilidadeCone(posicaoCone, tabuleiro);
+    habilidadeCruz(posicaoCruz, tabuleiro);
+    habilidadeOcta(posicaoOcta, tabuleiro);
+    exibirTabuleiro(tabuleiro);
 
     // Exemplos de exibição das habilidades:
     // Exemplo para habilidade em cone:
@@ -143,10 +195,77 @@ void colocarNavioDiagonalSecundaria(int navioDiagonal[2], int tabuleiro[LINHAS][
     }
 }   
 
+void habilidadeCone(int posicaoInicial[2], int tabuleiro[LINHAS][COLUNAS])
+{
+    for(int i = 0; i < 3; i++){
+        if (!checarSeCabeNoTabuleiro(posicaoInicial[0] + i) || !checarSeCabeNoTabuleiro(posicaoInicial[1] + i) || !checarSeCabeNoTabuleiro(posicaoInicial[1] + (i-2)))
+        {
+            printf("Habilidade Cone é maior que o tabuleiro");
+            return;
+        }
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < COLUNAS; j++)
+        {
+            if (j >= posicaoInicial[1] - i && j <= posicaoInicial[1] + i)
+            {
+                tabuleiro[posicaoInicial[0] + i][j] = 1;
+            }
+        }
+    }
+}
+
+void habilidadeCruz(int posicaoCentral[2], int tabuleiro[LINHAS][COLUNAS]){
+    for(int i = 0; i < 5; i++){
+        if (!checarSeCabeNoTabuleiro(posicaoCentral[0] + (i-2)) || !checarSeCabeNoTabuleiro(posicaoCentral[1] + (i-2)))
+        {
+            printf("Habilidade Cruz é maior que o tabuleiro");
+            return;
+        }
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < COLUNAS; j++)
+        {
+            tabuleiro[posicaoCentral[0] + (i-2)][posicaoCentral[1]] = 1;
+            if(j >= posicaoCentral[1] - 2){
+                tabuleiro[posicaoCentral[0]][posicaoCentral[1] + (i-2)] = 1;
+            }
+        }
+    }
+}
+
+void habilidadeOcta(int posicaoCentral[2], int tabuleiro[LINHAS][COLUNAS]){
+    for(int i = 0; i < 5; i++){
+        if (!checarSeCabeNoTabuleiro(posicaoCentral[0] + (i-2)) || !checarSeCabeNoTabuleiro(posicaoCentral[1] + (i-2)))
+        {
+            printf("Habilidade Octaedro é maior que o tabuleiro");
+            return;
+        }
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < COLUNAS; j++)
+        {
+            tabuleiro[posicaoCentral[0] + (i-2)][posicaoCentral[1]] = 1;
+            if(j >= posicaoCentral[1] - 2){
+                tabuleiro[posicaoCentral[0]][posicaoCentral[1] + (i-2)] = 1;
+            }
+            if(j >= posicaoCentral[1] - 1 && j <= posicaoCentral[1] + 1){
+                if(i > 0 && i < 4){
+                    tabuleiro[posicaoCentral[0] + (i-2)][j] = 1;
+                }
+            }
+        }
+    }
+}
+
 void exibirTabuleiro(int tabuleiro[LINHAS][COLUNAS])
 {
-    printf("\n====================== TABULEIRO NÍVEL NOVATO ======================\n\n");
-
     const char colunas[COLUNAS] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
     // Espaço antes de começar as colunas para alinhar com o tabuleiro no terminal
@@ -179,6 +298,16 @@ void exibirTabuleiro(int tabuleiro[LINHAS][COLUNAS])
     }
 }
 
+void iniciarTabuleiro(int tabuleiro[LINHAS][COLUNAS]){
+    for (int i = 0; i < LINHAS; i++)
+    {
+        for (int j = 0; j < COLUNAS; j++)
+        {
+            tabuleiro[i][j] = 0;
+        }
+    }
+}
+
 int checarSeCabeNoTabuleiro(int i)
 {
     if (i < 0 || i > 9)
@@ -187,4 +316,20 @@ int checarSeCabeNoTabuleiro(int i)
     }
 
     return 1;
+}
+
+void mostrarTitulo(char titulo[30]){
+    printf("\n\n");
+
+    for(int i = 0; i < 20; i++){
+        printf("/");
+    }
+
+    printf(" TABULEIRO %s ", titulo);
+    
+    for(int i = 0; i < 20; i++){
+        printf("/");
+    }
+    
+    printf("\n\n");
 }
